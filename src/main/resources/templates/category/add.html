@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/upload.js}"></script>
+  <th:block th:replace="~{layout::link-css}"></th:block>
+  <th:block th:replace="~{layout::custom-css}"></th:block>
+  <title>Add</title>
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+<div class="container">
+  <h1>Add category</h1>
+  <form th:action="@{/categories/add}" th:object="${category}" method="post" enctype="multipart/form-data">
+    <div class="col-6 mb-3">
+      <label class="form-label" for="name">Name:</label><span class="text-danger">*</span>
+      <input class="form-control" required type="text" th:field="*{name}" id="name" placeholder="Enter title" autofocus>
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Save">
+  </form>
+  <br>
+  <a th:href="@{/products}" class="btn btn-danger">Back to List</a>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>
