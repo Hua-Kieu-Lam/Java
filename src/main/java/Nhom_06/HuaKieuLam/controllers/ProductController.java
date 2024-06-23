@@ -82,7 +82,6 @@ public String addProduct(
     }
 
     try {
-
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         String uploadDir = "src/main/resources/static/images/";
         Path uploadPath = Paths.get(uploadDir);

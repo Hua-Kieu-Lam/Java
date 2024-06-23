@@ -1,3 +1,77 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Cart</title>-->
+<!--    <th:block th:replace="~{layout::link-css}"></th:block>-->
+<!--    <th:block th:replace="~{layout::custom-css}"></th:block>-->
+<!--</head>-->
+<!--<body>-->
+<!--<th:block th:replace="~{layout::header}"></th:block>-->
+<!--<div class="container" th:if="${not #lists.isEmpty(cart.cartItems)}">-->
+<!--    <table class="table">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th scope="col">ID</th>-->
+<!--            <th scope="col">Name</th>-->
+<!--            <th scope="col">Quantity</th>-->
+<!--            <th scope="col">Price</th>-->
+<!--            <th scope="col">Total</th>-->
+<!--            <th scope="col">Action</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="item : ${cart.cartItems}">-->
+<!--            <td th:text="${item.getProductId()}"></td>-->
+<!--            <td th:text="${item.getProductName()}"></td>-->
+<!--            <td>-->
+<!--                <label>-->
+<!--                    <input type="number" min="1"-->
+<!--                           th:value="${item.getQuantity()}"-->
+<!--                           th:attr="data-id=${item.getProductId()}"-->
+<!--                           class="form-control quantity">-->
+<!--                </label>-->
+<!--            </td>-->
+<!--            <td th:text="${item.getPrice()}"></td>-->
+<!--            <td th:text="${item.getPrice() * item.getQuantity()}"></td>-->
+<!--            <td>-->
+<!--                <a class="btn btn-danger"-->
+<!--                   th:href="@{/cart/removeFromCart/{id}(id=${item.getProductId()})}">-->
+<!--                    Remove-->
+<!--                </a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <div class="row">-->
+<!--        <div class="col-md-12">-->
+<!--            <h3>Total: <span th:text="${totalPrice}"></span></h3>-->
+<!--        </div>-->
+<!--        <div class="col-md-12 text-center">-->
+<!--            <a class="btn btn-success"-->
+<!--               th:href="@{/cart/checkout}">Checkout</a>-->
+<!--            <a class="btn btn-danger"-->
+<!--               th:href="@{/cart/clearCart}">Clear Cart</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="container" th:if="${#lists.isEmpty(cart.cartItems)}">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-6 offset-md-3 text-center">-->
+<!--                <h3 class="mt-5">Your cart is empty</h3>-->
+<!--                <p class="lead">Please add some products to your cart</p>-->
+<!--                <a class="btn btn-primary" href="/products">Go to list</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<th:block th:replace="~{layout::footer}"></th:block>-->
+<!--<script th:src="@{/js/cart.js}"></script>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
@@ -30,12 +104,12 @@
                 <label>
                     <input type="number" min="1"
                            th:value="${item.getQuantity()}"
-                           th:attr="data-id=${item.getProductId()}"
+                           th:attr="data-id=${item.getProductId()},data-price=${item.getPrice()}"
                            class="form-control quantity">
                 </label>
             </td>
             <td th:text="${item.getPrice()}"></td>
-            <td th:text="${item.getPrice() * item.getQuantity()}"></td>
+            <td th:text="${item.getPrice() * item.getQuantity()}" class="item-total"></td>
             <td>
                 <a class="btn btn-danger"
                    th:href="@{/cart/removeFromCart/{id}(id=${item.getProductId()})}">
@@ -47,7 +121,7 @@
     </table>
     <div class="row">
         <div class="col-md-12">
-            <h3>Total: <span th:text="${totalPrice}"></span></h3>
+            <h3>Total: <span id="totalPrice" th:text="${totalPrice}"></span></h3>
         </div>
         <div class="col-md-12 text-center">
             <a class="btn btn-success"
@@ -70,5 +144,63 @@
 </div>
 <th:block th:replace="~{layout::footer}"></th:block>
 <script th:src="@{/js/cart.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const quantityInputs = document.querySelectorAll('.quantity');
+        const totalPriceElement = document.getElementById('totalPrice');
+
+        quantityInputs.forEach(input => {
+            input.addEventListener('input', updateCart);
+        });
+
+        function updateCart(event) {
+            const input = event.target;
+            const productId = input.getAttribute('data-id');
+            const productPrice = parseFloat(input.getAttribute('data-price'));
+            const quantity = parseInt(input.value);
+
+            if (quantity < 1) {
+                input.value = 1;
+                return;
+            }
+
+            const itemTotalElement = input.closest('tr').querySelector('.item-total');
+            itemTotalElement.textContent = (productPrice * quantity).toFixed(2);
+
+            updateTotalPrice();
+
+            // Send AJAX request to update quantity in the backend
+            fetch(`/cart/updateCart/${productId}/${quantity}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle success if needed
+                    console.log('Cart updated successfully');
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+        function updateTotalPrice() {
+            let totalPrice = 0;
+
+            document.querySelectorAll('.item-total').forEach(itemTotalElement => {
+                totalPrice += parseFloat(itemTotalElement.textContent);
+            });
+
+            totalPriceElement.textContent = totalPrice.toFixed(2);
+        }
+    });
+</script>
 </body>
 </html>
