@@ -24,6 +24,16 @@ public class Product {
     private Double price;
     @Column(name = "image_url")
     private String imageUrl;
+    @Column(name = "caloriesPerGram")
+    private Double caloriesPerGram;
+    @Column(name = "protein")
+    private Double protein;
+    @Column(name = "carbs")
+    private Double carbs;
+    @Column(name = "fat")
+    private Double fat;
+    @Column(name = "alcohol")
+    private Double alcohol;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ToString.Exclude

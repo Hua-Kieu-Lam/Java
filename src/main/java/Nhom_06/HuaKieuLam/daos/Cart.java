@@ -1,5 +1,10 @@
 package Nhom_06.HuaKieuLam.daos;
 
+import Nhom_06.HuaKieuLam.entities.User;
+import Nhom_06.HuaKieuLam.repositories.IUserRepository;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
