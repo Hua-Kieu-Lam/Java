@@ -1,6 +1,7 @@
 package Nhom_06.HuaKieuLam.controllers;
 
 import Nhom_06.HuaKieuLam.daos.Item;
+import Nhom_06.HuaKieuLam.entities.Category;
 import Nhom_06.HuaKieuLam.entities.Product;
 import Nhom_06.HuaKieuLam.services.CartService;
 import Nhom_06.HuaKieuLam.services.CategoryService;
@@ -26,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
@@ -53,7 +55,6 @@ public class ProductController {
                 categoryService.getAllCategories());
         return "product/list";
     }
-
 
     @GetMapping("/add")
     public String addProductForm(@NonNull Model model) {

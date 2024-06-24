@@ -18,7 +18,6 @@ import java.util.Objects;
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "id")
     private Long id;
 
@@ -62,4 +61,11 @@ public class Invoice {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
+    private List<ItemInvoice> items;
 }
