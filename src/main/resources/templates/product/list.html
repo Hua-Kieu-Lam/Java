@@ -25,9 +25,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <nav class="navbar navbar-light">
+            <nav class="navbar navbar-light ">
                 <div class="container-fluid">
-                    <h2>List</h2>
+                    <h2>List Product</h2>
+                    <a class="btn btn-outline-success" sec:authorize="hasAuthority('ADMIN')" href="/products/add">Add Product</a>
                     <form class="d-flex" th:action="@{/products/search}" method="get">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
                         <button class="btn btn-outline-success" type="submit">Search</button>

@@ -12,7 +12,12 @@
 <body>
 <th:block th:replace="~{layout::header}"></th:block>
 <div class="container">
-    <h2>My Category List</h2>
+    <nav class="navbar navbar-light">
+        <div class="container-fluid">
+            <h4>List Category</h4>
+            <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-outline-success" href="/categories/add">Add Category</a>
+        </div>
+    </nav>
     <table class="table">
         <thead>
         <tr>

@@ -45,6 +45,9 @@ public class Invoice {
     @Column(name = "total")
     private Double price;
 
+    @Column(name = "status")
+    private String status;
+
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<ItemInvoice> itemInvoices = new ArrayList<>();
