@@ -16,23 +16,43 @@
     <h1>Add</h1>
     <form th:action="@{/products/add}" th:object="${product}" method="post" enctype="multipart/form-data">
         <div class="col-6 mb-3">
-            <label class="form-label" for="title">Title:</label><span class="text-danger">*</span>
+            <label class="form-label" for="title">Tên:</label><span class="text-danger">*</span>
             <input class="form-control" required type="text" th:field="*{title}" id="title" placeholder="Enter title" autofocus>
         </div>
         <div class="col-6 mb-3">
-            <label class="form-label" for="price">Price:</label><span class="text-danger">*</span>
+            <label class="form-label" for="price">Giá:</label><span class="text-danger">*</span>
             <input class="form-control" required type="text" th:field="*{price}" id="price" placeholder="Enter price">
         </div>
         <div class="col-6 mb-3">
-            <label class="form-label" for="category">Category:</label><span class="text-danger">*</span>
+            <label class="form-label" for="category">Danh mục:</label><span class="text-danger">*</span>
             <select class="form-control" id="category" name="category.id">
                 <option value="">-- Select Category --</option>
                 <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
             </select>
         </div>
         <div class="col-6 mb-3">
-            <label class="form-label" for="image">Image:</label>
-            <input class="form-control" type="file" id="image" name="image">
+            <label class="form-label" for="caloriesPerGram">Calo trên 100g:</label><span class="text-danger">*</span>
+            <input class="form-control" required type="text" th:field="*{caloriesPerGram}" id="caloriesPerGram" placeholder="Enter caloriesPerGram">
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" for="protein">Hàm lượng chất đạm:</label>
+            <input class="form-control"  type="text" th:field="*{protein}" id="protein" placeholder="Enter protein">
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" for="carbs">Hàm lượng tinh bột:</label>
+            <input class="form-control"  type="text" th:field="*{carbs}" id="carbs" placeholder="Enter carbs">
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" for="fat">Hàm lượng chất béo:</label>
+            <input class="form-control"  type="text" th:field="*{fat}" id="fat" placeholder="Enter fat">
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" for="alcohol">Hàm lượng cồn:</label>
+            <input class="form-control"  type="text" th:field="*{alcohol}" id="alcohol" placeholder="Enter alcohol">
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" for="image">Hình ảnh:</label>
+            <input class="form-control" type="file" id="image" name="image" required>
         </div>
         <input type="submit" class="btn btn-primary" value="Save">
     </form>

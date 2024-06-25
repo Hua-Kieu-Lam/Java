@@ -16,12 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-@Controller // Đánh dấu lớp này là một Controller trong Spring MVC.
+@Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final OAuth2AuthorizedClientService authorizedClientService;
     @GetMapping("/login")
     public String login() {
         return "users/login";

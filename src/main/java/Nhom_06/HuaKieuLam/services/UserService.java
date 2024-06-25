@@ -7,6 +7,7 @@ import Nhom_06.HuaKieuLam.repositories.IUserRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,5 +59,15 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByUsername(String username) throws
             UsernameNotFoundException {
         return userRepository.findByUsername(username);
+    }
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            return userRepository.findByUsername(username)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        } else {
+            throw new IllegalArgumentException("User not authenticated");
+        }
     }
 }

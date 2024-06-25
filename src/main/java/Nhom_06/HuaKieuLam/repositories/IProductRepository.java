@@ -31,4 +31,5 @@ public interface IProductRepository extends PagingAndSortingRepository<Product, 
     @Modifying
     @Query("UPDATE Product b SET b.imageUrl = :imageUrl WHERE b.id = :id")
     void save(@Param("id") Long id, @Param("image") String imageUrl);
+
 }
