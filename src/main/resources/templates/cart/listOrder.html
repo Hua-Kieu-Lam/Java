@@ -8,6 +8,7 @@
     <title>List Order</title>
     <th:block th:replace="~{layout::link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <th:block th:replace="~{layout::header}"></th:block>
@@ -16,9 +17,7 @@
         <div class="container-fluid">
             <h4>List Order</h4>
             <form class="d-flex" th:action="@{/cart/search}" method="get">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search by ID or Customer Name"
-                       name="id">
-                <input type="hidden" name="keyword">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
@@ -93,6 +92,9 @@
     </table>
 </div>
 <th:block th:replace="~{layout::footer}"></th:block>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 
