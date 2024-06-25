@@ -72,14 +72,19 @@
                                href="/">Home</a>
                         </li>
                         
-                        <li class="nav-item"><a class="nav-link" href="/products">Danh sách SP</a></li>
-                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')"><a class="nav-link" href="/products/add">Thêm SP</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/categories">Danh mục</a></li>
-                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')"><a class="nav-link" href="/categories/add">Thêm danh mục</a></li>
+<!--                        <li class="nav-item"><a class="nav-link" href="/products">Danh sách SP</a></li>-->
+<!--                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')"><a class="nav-link" href="/products/add">Thêm SP</a></li>-->
+<!--                        <li class="nav-item"><a class="nav-link" href="/categories">Danh mục</a></li>-->
+<!--                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')"><a class="nav-link" href="/categories/add">Thêm danh mục</a></li>-->
+<!--                        <li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a class="nav-link" href="/cart/listOrder">Order Detail</a></li>-->
+<!--                        <li sec:authorize="hasAuthority('USER')" class="nav-item"><a class="nav-link" href="/cart/listOrder">My Order</a></li>-->
+<!--                      -->
+<!--                        <li class="nav-item"><a class="nav-link" href="/cart">Giỏ hàng</a></li>-->
+                        <li class="nav-item"><a class="nav-link" href="/products">Product</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/categories">Category</a></li>
                         <li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a class="nav-link" href="/cart/listOrder">Order Detail</a></li>
                         <li sec:authorize="hasAuthority('USER')" class="nav-item"><a class="nav-link" href="/cart/listOrder">My Order</a></li>
-                      
-                        <li class="nav-item"><a class="nav-link" href="/cart">Giỏ hàng</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cart">Cart</a></li>
                         <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
 
                     </ul>
