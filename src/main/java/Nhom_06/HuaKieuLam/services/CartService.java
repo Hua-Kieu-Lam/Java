@@ -3,8 +3,14 @@ package Nhom_06.HuaKieuLam.services;
 
 import Nhom_06.HuaKieuLam.daos.Cart;
 import Nhom_06.HuaKieuLam.daos.Item;
-import Nhom_06.HuaKieuLam.entities.*;
-import Nhom_06.HuaKieuLam.repositories.*;
+import Nhom_06.HuaKieuLam.entities.Invoice;
+import Nhom_06.HuaKieuLam.entities.ItemInvoice;
+import Nhom_06.HuaKieuLam.entities.Product;
+import Nhom_06.HuaKieuLam.entities.User;
+import Nhom_06.HuaKieuLam.repositories.IInvoiceRepository;
+import Nhom_06.HuaKieuLam.repositories.IItemInvoiceRepository;
+import Nhom_06.HuaKieuLam.repositories.IProductRepository;
+import Nhom_06.HuaKieuLam.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +31,6 @@ public class CartService {
     private final IItemInvoiceRepository itemInvoiceRepository;
     private final IProductRepository productRepository;
     private final UserRepository userRepository;
-    private final CartRepository cartRepository;
 
     public Cart getCart(@NonNull HttpSession session) {
         return Optional.ofNullable((Cart) session.getAttribute(CART_SESSION_KEY))
@@ -56,37 +61,13 @@ public class CartService {
                 .sum();
     }
 
-//    public void saveCart(@NonNull HttpSession session, @NonNull Invoice invoice) {
-//        Cart cart = getCart(session);
-//        if (cart.getCartItems().isEmpty()) return;
-//
-//        invoice.setInvoiceDate(new Date());
-//        invoice.setPrice(getSumPrice(session));
-//        invoiceRepository.save(invoice);
-//
-//        cart.getCartItems().forEach(item -> {
-//            ItemInvoice itemInvoice = new ItemInvoice();
-//            itemInvoice.setInvoice(invoice);
-//            itemInvoice.setQuantity(item.getQuantity());
-//            itemInvoice.setProduct(productRepository.findById(item.getProductId())
-//                    .orElseThrow(() -> new IllegalArgumentException("Product not found")));
-//            itemInvoiceRepository.save(itemInvoice);
-//        });
-//
-//        removeCart(session);
-//    }
-    private final IUserRepository userRepository;  // Để truy vấn và lưu thông tin người dùng
-    public void saveCart(@NonNull HttpSession session, Invoice invoice, @NonNull Long userId) {
-        User user = userRepository.findById(String.valueOf(userId))
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
+    public void saveCart(@NonNull HttpSession session, @NonNull Invoice invoice) {
         Cart cart = getCart(session);
         if (cart.getCartItems().isEmpty()) return;
+
         invoice.setInvoiceDate(new Date());
         invoice.setPrice(getSumPrice(session));
         invoice.setStatus("Pending"); // Đặt trạng thái ban đầu là Pending
-        invoice.setUser(user);
-
         invoiceRepository.save(invoice);
 
         cart.getCartItems().forEach(item -> {
@@ -169,26 +150,3 @@ public class CartService {
 
 }
 
-//    public void saveCart(@NonNull HttpSession session, @NonNull Invoice invoice,@NonNull Long userId) {
-//        User user = userRepository.findById(String.valueOf(userId))
-//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-//
-//        Cart cart = getCart(session);
-//        if (cart.getCartItems().isEmpty()) return;
-//
-//        invoice.setInvoiceDate(new Date());
-//        invoice.setPrice(getSumPrice(session));
-//        invoiceRepository.save(invoice);
-//
-//        cart.getCartItems().forEach(item -> {
-//            ItemInvoice itemInvoice = new ItemInvoice();
-//            itemInvoice.setInvoice(invoice);
-//            itemInvoice.setQuantity(item.getQuantity());
-//            itemInvoice.setProduct(productRepository.findById(item.getProductId())
-//                    .orElseThrow(() -> new IllegalArgumentException("Product not found")));
-//            itemInvoiceRepository.save(itemInvoice);
-//        });
-//
-//        removeCart(session);
-//    }
-}
