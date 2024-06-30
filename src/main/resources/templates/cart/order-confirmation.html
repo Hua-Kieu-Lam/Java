@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
-    <title th:text="${title} ?: 'Your Cart'">Order Confirmation</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initialscale=1.0">
+    <title>List Order</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<section layout:fragment="content" class="container mt-3">
+<th:block th:replace="~{layout::header}"></th:block>
+
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3 text-center">
                 <h1>Order Confirmation</h1>
-                <p th:text="${message}"></p>
+                <div th:each="order : ${invoice}">
+                    <a th:href="@{/cart/order/{id}(id=${invoice.id})}" class="btn btn-info">View Details</a>
+                </div>
                 <a class="btn btn-primary" href="/products">Go to list product</a>
             </div>
         </div>
     </div>
-</section>
+<th:block th:replace="~{layout::footer}"></th:block>
+
 </body>
 </html>

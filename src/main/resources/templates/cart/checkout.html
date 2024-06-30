@@ -10,7 +10,7 @@
 <body>
 <section layout:fragment="content" class="container mt-3">
     <h1>Place Your Order</h1>
-    <form th:action="@{/cart/submit}" method="post">
+    <form id="orderForm" th:action="@{/cart/submit}" method="post">
         <div class="mb-3">
             <label for="customerName" class="form-label">Your Name:</label>
             <input type="text" id="customerName" name="customerName" class="form-control" required>
@@ -35,13 +35,64 @@
             <label for="paymentMethod" class="form-label">Payment Method:</label>
             <select id="paymentMethod" name="paymentMethod" class="form-select" required>
                 <option value="Credit Card">Credit Card</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Bank Transfer">Bank Transfer</option>
                 <option value="Cash on Delivery">Cash on Delivery</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Submit Order</button>
     </form>
 </section>
+<!--<script th:inline="javascript">-->
+<!--    var amount = [[${totalAmount}]]; // Số tiền cần thanh toán-->
+<!--    document.getElementById('orderForm').addEventListener('submit', function(event) {-->
+<!--        var paymentMethod = document.getElementById('paymentMethod').value;-->
+<!--        if (paymentMethod === 'Credit Card') {-->
+<!--            event.preventDefault(); // Prevent the default form submission-->
+<!--            fetch('http://localhost:8080/pay?amount=' + amount)-->
+<!--                .then(response => response.text())-->
+<!--                .then(paymentUrl => {-->
+<!--                    window.location.href = paymentUrl;-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('Error:', error);-->
+<!--                });-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--<script th:inline="javascript">-->
+<!--    var amount = [[${totalAmount}]]; // Số tiền cần thanh toán-->
+<!--    document.getElementById('orderForm').addEventListener('submit', function(event) {-->
+<!--        var paymentMethod = document.getElementById('paymentMethod').value;-->
+<!--        if (paymentMethod === 'Credit Card') {-->
+<!--            event.preventDefault(); // Prevent the default form submission-->
+<!--            fetch('http://localhost:8080/pay?amount=' + amount)-->
+<!--                .then(response => response.text())-->
+<!--                .then(paymentUrl => {-->
+<!--                    window.location.href = paymentUrl;-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('Error:', error);-->
+<!--                });-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<script th:inline="javascript">
+    var amount = [[${totalAmount}]]; // Số tiền cần thanh toán
+    document.getElementById('orderForm').addEventListener('submit', function(event) {
+        var paymentMethod = document.getElementById('paymentMethod').value;
+        if (paymentMethod === 'Credit Card') {
+            // event.preventDefault();
+            fetch('http://localhost:8080/pay?amount=' + amount)
+                .then(response => response.text())
+                .then(paymentUrl => {
+                    window.location.href = paymentUrl;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        // No preventDefault() for 'Cash on Delivery', let the form submit as usual
+    });
+</script>
+
 </body>
 </html>

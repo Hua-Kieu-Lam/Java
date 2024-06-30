@@ -1,94 +1,3 @@
-//package Nhom_06.HuaKieuLam.controllers;
-//
-//import Nhom_06.HuaKieuLam.entities.Invoice;
-//import Nhom_06.HuaKieuLam.services.CartService;
-//import jakarta.servlet.http.HttpSession;
-//import lombok.NonNull;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@Controller
-//@RequestMapping("/cart")
-//@RequiredArgsConstructor
-//public class CartController {
-////    private final CartService cartService;
-////
-////    @GetMapping
-////    public String showCart(HttpSession session, @NonNull Model model) {
-////        model.addAttribute("cart", cartService.getCart(session));
-////        model.addAttribute("totalPrice", cartService.getSumPrice(session));
-////        model.addAttribute("totalQuantity", cartService.getSumQuantity(session));
-////        return "cart/cart";
-////    }
-////
-////    @GetMapping("/removeFromCart/{id}")
-////    public String removeFromCart(HttpSession session, @PathVariable Long id) {
-////        var cart = cartService.getCart(session);
-////        cart.removeItems(id);
-////        cartService.updateCart(session, cart);
-////        return "redirect:/cart";
-////    }
-////
-////    @GetMapping("/updateCart/{id}/{quantity}")
-////    public String updateCart(HttpSession session, @PathVariable long id, @PathVariable int quantity) {
-////        var cart = cartService.getCart(session);
-////        cart.updateItems(id, quantity);
-////        cartService.updateCart(session, cart);
-////        return "redirect:/cart";
-////    }
-////
-////    @GetMapping("/clearCart")
-////    public String clearCart(HttpSession session) {
-////        cartService.removeCart(session);
-////        return "redirect:/cart";
-////    }
-////    @GetMapping("/checkout")
-////    public String checkout() {
-////        return "cart/checkout";
-////    }
-////    @PostMapping("/submit")
-////    public String submitOrder(
-////            @RequestParam String customerName,
-////            @RequestParam String shippingAddress,
-////            @RequestParam String phoneNumber,
-////            @RequestParam String email,
-////            @RequestParam String notes,
-////            @RequestParam String paymentMethod,
-////            HttpSession session) {
-////
-////        Invoice invoice = Invoice.builder()
-////                .customerName(customerName)
-////                .shippingAddress(shippingAddress)
-////                .phoneNumber(phoneNumber)
-////                .email(email)
-////                .notes(notes)
-////                .paymentMethod(paymentMethod)
-////                .build();
-////
-////        cartService.saveCart(session, invoice);
-////        return "redirect:/cart/confirmation";
-////    }
-////
-////    @GetMapping("/confirmation")
-////    public String orderConfirmation(HttpSession session, Invoice invoice,Model model) {
-////        cartService.saveCart(session, invoice);
-////        model.addAttribute("message", "Your order has been successfully placed.");
-////        cartService.removeCart(session);
-////        return "cart/order-confirmation";
-////    }
-//////
-//////    @PostMapping("/submit")
-//////    public String submitOrder(String customerName, HttpSession session) {
-//////        cartService.saveCart(session);
-//////        return "redirect:/cart/order-confirmation";
-//////    }
-//
-//}
-//
 package Nhom_06.HuaKieuLam.controllers;
 import Nhom_06.HuaKieuLam.entities.Invoice;
 import Nhom_06.HuaKieuLam.repositories.IInvoiceRepository;
@@ -143,7 +52,9 @@ public class CartController {
     }
 
     @GetMapping("/checkout")
-    public String checkout() {
+    public String checkout(HttpSession session, Model model) {
+        double totalAmount = cartService.getSumPrice(session);
+        model.addAttribute("totalAmount", totalAmount);
         return "cart/checkout";
     }
 
@@ -157,7 +68,6 @@ public class CartController {
             @RequestParam String paymentMethod,
             HttpSession session) {
 
-        // Create invoice from the form data
         Invoice invoice = Invoice.builder()
                 .customerName(customerName)
                 .shippingAddress(shippingAddress)
@@ -168,10 +78,8 @@ public class CartController {
                 .status("Pending")
                 .build();
 
-        // Save the order information in the session
         cartService.saveCart(session, invoice);
 
-        // Save the invoice to session for confirmation display
         session.setAttribute("invoice", invoice);
 
         return "redirect:/cart/confirmation";
@@ -179,25 +87,18 @@ public class CartController {
 
     @GetMapping("/confirmation")
     public String orderConfirmation(HttpSession session, Model model) {
-        // Get the order information from the session
         Invoice invoice = (Invoice) session.getAttribute("invoice");
         if (invoice == null) {
-            // If no order information, redirect to the cart page
             return "redirect:/cart";
         }
 
-        // Display order information on the order-confirmation page
         model.addAttribute("invoice", invoice);
 
-        // Remove the order information from the session after displaying
         session.removeAttribute("invoice");
 
         return "cart/order-confirmation";
     }
 
-    //tạo list order
-
-    //tìm kiếm
     @GetMapping("/search")
     public String getListOrders(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
         List<Invoice> orders;
@@ -211,19 +112,14 @@ public class CartController {
         return "cart/listOrder";
     }
 
-    //danh sách mua hàng(admin, người dùng)
     @GetMapping("/listOrder")
     public String getListOrders(Model model, Authentication authentication) {
-        // Lấy thông tin người dùng hiện tại từ Authentication
         String username = authentication.getName();
 
-        // Kiểm tra vai trò của người dùng để hiển thị danh sách đơn hàng tương ứng
         if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
-            // Nếu là admin, lấy danh sách đơn hàng cho admin
             List<Invoice> orders = cartService.getAllOrders();
             model.addAttribute("orders", orders);
         } else {
-            // Nếu là user, lấy danh sách đơn hàng của user hiện tại
             List<Invoice> orders = cartService.getOrdersByUsername(username);
             model.addAttribute("orders", orders);
         }
