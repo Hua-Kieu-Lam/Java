@@ -55,6 +55,16 @@ public class ProductController {
                 categoryService.getAllCategories());
         return "product/list";
     }
+    @GetMapping("/details/{id}")
+    public String productDetails(@PathVariable long id, Model model) {
+        Optional<Product> product = productService.getProductById(id);
+        if (product.isPresent()) {
+            model.addAttribute("product", product.get());
+            return "product/details";
+        } else {
+            throw new IllegalArgumentException("Product not found");
+        }
+    }
 
     @GetMapping("/add")
     public String addProductForm(@NonNull Model model) {

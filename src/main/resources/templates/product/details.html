@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+<div class="container">
+    <h1>Product Details</h1>
+    <div class="product-details">
+        <img th:src="@{${product.imageUrl}}" alt="Product Image" class="product-image"/>
+        <div class="product-info">
+            <h2 th:text="${product.title}">Product Title</h2>
+            <p><strong>Price:</strong> $<span th:text="${product.price}">0.00</span></p>
+            <p><strong>Category:</strong> <span th:text="${product.category.name}">Category</span></p>
+            <p><strong>Calories Per Gram:</strong> <span th:text="${product.caloriesPerGram}">0</span></p>
+            <p><strong>Protein:</strong> <span th:text="${product.protein}">0</span></p>
+            <p><strong>Carbs:</strong> <span th:text="${product.carbs}">0</span></p>
+            <p><strong>Fat:</strong> <span th:text="${product.fat}">0</span></p>
+            <p><strong>Alcohol:</strong> <span th:text="${product.alcohol}">0</span></p>
+        </div>
+    </div>
+    <a href="/products" class="btn">Back to Products</a>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>
