@@ -126,7 +126,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error",
-                                "/products", "/cart", "/cart/**", "/images/**", "/categories","/contact")
+                                "/products", "/cart", "/cart/**", "/images/**", "/categories","/contact" ,"/forgot-password", "/reset-password")
                         .permitAll()
                         .requestMatchers("/products/edit/**", "/products/add", "/products/delete")
                         .hasAnyAuthority("ADMIN")
