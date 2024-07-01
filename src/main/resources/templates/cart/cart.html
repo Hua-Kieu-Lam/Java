@@ -1,3 +1,4 @@
+
 <!--<!DOCTYPE html>-->
 <!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
 <!--<head>-->
@@ -30,12 +31,12 @@
 <!--                <label>-->
 <!--                    <input type="number" min="1"-->
 <!--                           th:value="${item.getQuantity()}"-->
-<!--                           th:attr="data-id=${item.getProductId()}"-->
+<!--                           th:attr="data-id=${item.getProductId()},data-price=${item.getPrice()}"-->
 <!--                           class="form-control quantity">-->
 <!--                </label>-->
 <!--            </td>-->
 <!--            <td th:text="${item.getPrice()}"></td>-->
-<!--            <td th:text="${item.getPrice() * item.getQuantity()}"></td>-->
+<!--            <td th:text="${item.getPrice() * item.getQuantity()}" class="item-total"></td>-->
 <!--            <td>-->
 <!--                <a class="btn btn-danger"-->
 <!--                   th:href="@{/cart/removeFromCart/{id}(id=${item.getProductId()})}">-->
@@ -47,7 +48,7 @@
 <!--    </table>-->
 <!--    <div class="row">-->
 <!--        <div class="col-md-12">-->
-<!--            <h3>Total: <span th:text="${totalPrice}"></span></h3>-->
+<!--            <h3>Total: <span id="totalPrice" th:text="${totalPrice}"></span></h3>-->
 <!--        </div>-->
 <!--        <div class="col-md-12 text-center">-->
 <!--            <a class="btn btn-success"-->
@@ -70,10 +71,71 @@
 <!--</div>-->
 <!--<th:block th:replace="~{layout::footer}"></th:block>-->
 <!--<script th:src="@{/js/cart.js}"></script>-->
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', () => {-->
+<!--        const quantityInputs = document.querySelectorAll('.quantity');-->
+<!--        const totalPriceElement = document.getElementById('totalPrice');-->
+
+<!--        quantityInputs.forEach(input => {-->
+<!--            input.addEventListener('input', updateCart);-->
+<!--        });-->
+
+<!--        function updateCart(event) {-->
+<!--            const input = event.target;-->
+<!--            const productId = input.getAttribute('data-id');-->
+<!--            const productPrice = parseFloat(input.getAttribute('data-price'));-->
+<!--            const quantity = parseInt(input.value);-->
+
+<!--            if (quantity < 1) {-->
+<!--                input.value = 1;-->
+<!--                return;-->
+<!--            }-->
+
+<!--            const itemTotalElement = input.closest('tr').querySelector('.item-total');-->
+<!--            itemTotalElement.textContent = (productPrice * quantity).toFixed(2);-->
+
+<!--            updateTotalPrice();-->
+
+<!--            // Send AJAX request to update quantity in the backend-->
+<!--            fetch(`/cart/updateCart/${productId}/${quantity}`, {-->
+<!--                method: 'GET',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/json'-->
+<!--                }-->
+<!--            })-->
+<!--                .then(response => {-->
+<!--                    if (!response.ok) {-->
+<!--                        throw new Error('Network response was not ok');-->
+<!--                    }-->
+<!--                    return response.json();-->
+<!--                })-->
+<!--                .then(data => {-->
+<!--                    // Handle success if needed-->
+<!--                    console.log('Cart updated successfully');-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('There was a problem with the fetch operation:', error);-->
+<!--                });-->
+<!--        }-->
+
+<!--        function updateTotalPrice() {-->
+<!--            let totalPrice = 0;-->
+
+<!--            document.querySelectorAll('.item-total').forEach(itemTotalElement => {-->
+<!--                totalPrice += parseFloat(itemTotalElement.textContent);-->
+<!--            });-->
+
+<!--            totalPriceElement.textContent = totalPrice.toFixed(2);-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 <!--</body>-->
 <!--</html>-->
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -83,7 +145,80 @@
     <th:block th:replace="~{layout::custom-css}"></th:block>
 </head>
 <body>
-<th:block th:replace="~{layout::header}"></th:block>
+<!-- Navbar start -->
+<div class="container-fluid fixed-top">
+    <div class="container topbar bg-primary d-none d-lg-block">
+        <div class="d-flex justify-content-between">
+            <div class="top-info ps-2">
+                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
+                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
+            </div>
+            <div class="top-link pe-2">
+                <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
+                <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
+                <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+            </div>
+        </div>
+    </div>
+    <div class="container px-0">
+        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">Fruitables</h1></a>
+            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-primary"></span>
+            </button>
+            <div class="collapse navbar-collapse"
+                 id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                           href="/">Home</a>
+                    </li>
+
+                    <!--                        <li class="nav-item"><a class="nav-link" href="/products">Danh sách SP</a></li>-->
+                    <!--                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')"><a class="nav-link" href="/products/add">Thêm SP</a></li>-->
+                    <!--                        <li class="nav-item"><a class="nav-link" href="/categories">Danh mục</a></li>-->
+                    <!--                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')"><a class="nav-link" href="/categories/add">Thêm danh mục</a></li>-->
+                    <!--                        <li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a class="nav-link" href="/cart/listOrder">Order Detail</a></li>-->
+                    <!--                        <li sec:authorize="hasAuthority('USER')" class="nav-item"><a class="nav-link" href="/cart/listOrder">My Order</a></li>-->
+                    <!--                      -->
+                    <!--                        <li class="nav-item"><a class="nav-link" href="/cart">Giỏ hàng</a></li>-->
+                    <li class="nav-item"><a class="nav-link" href="/products">Product</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/categories">Category</a></li>
+                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a class="nav-link" href="/cart/listOrder">Order Detail</a></li>
+                    <li sec:authorize="hasAuthority('USER')" class="nav-item"><a class="nav-link" href="/cart/listOrder">My Order</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cart">Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item d-flex align-items-center" sec:authorize="isAuthenticated()">
+                                 <span class="navbar-text">
+                                 Xin chào, <span sec:authentication="name" style="margin-right: 20px;"></span>
+                                 </span>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post">
+                            <button class="btn btn-outline-danger"
+                                    type="submit">Logout</button>
+                        </form>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-outline-success" href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- Navbar End -->
+
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Shop Detail</h1>
+</div>
+<!-- Single Page Header End -->
+
 <div class="container" th:if="${not #lists.isEmpty(cart.cartItems)}">
     <table class="table">
         <thead>

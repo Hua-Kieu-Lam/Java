@@ -7,21 +7,19 @@
     <title>Order Details</title>
     <th:block th:replace="~{layout::link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             background-color: #f8f9fa;
         }
         .container {
-            max-width: 900px;
+            max-width: 1200px;
         }
         .card-header {
-            background-color: #007bff;
+            background-color: gainsboro;
             color: #fff;
         }
         .table th {
-            background-color: #007bff;
-            color: #fff;
+            background-color: gainsboro;
         }
         .table td, .table th {
             vertical-align: middle;
@@ -52,6 +50,7 @@
                         <th>Product</th>
                         <th>Quantity</th>
                         <th>Price</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -62,6 +61,7 @@
                     </tr>
                     </tbody>
                 </table>
+                <p><strong>Total:</strong> <span th:text="${order.getPrice()}"></span></p>
             </div>
             <div th:if="${order == null}" class="alert alert-warning">
                 <p>Order not found.</p>

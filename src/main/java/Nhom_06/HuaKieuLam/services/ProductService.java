@@ -33,6 +33,7 @@ public class ProductService {
     public void addProduct(Product product) {
         productRepository.save(product);
     }
+
     public void updateProduct(@NonNull Product product) {
         Product existingProduct = productRepository.findById(product.getId())
                 .orElse(null);
@@ -40,17 +41,21 @@ public class ProductService {
         existingProduct.setPrice(product.getPrice());
         existingProduct.setCategory(product.getCategory());
         existingProduct.setImageUrl(product.getImageUrl());
+        existingProduct.setCaloriesPerGram(product.getCaloriesPerGram());
+        existingProduct.setProtein(product.getProtein());
+        existingProduct.setCarbs(product.getCarbs());
+        existingProduct.setFat(product.getFat());
+        existingProduct.setAlcohol(product.getAlcohol());
+
         productRepository.save(existingProduct);
     }
 
     public void deleteProductById(Long id) {
         productRepository.deleteById(id);
     }
+
     public List<Product> searchProduct(String keyword) {
         return productRepository.searchProduct(keyword);
-    }
-    public void saveImg(MultipartFile file){
-
     }
 }
 
