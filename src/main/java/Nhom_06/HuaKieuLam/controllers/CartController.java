@@ -1,7 +1,9 @@
 package Nhom_06.HuaKieuLam.controllers;
 import Nhom_06.HuaKieuLam.entities.Invoice;
+import Nhom_06.HuaKieuLam.entities.User;
 import Nhom_06.HuaKieuLam.repositories.IInvoiceRepository;
 import Nhom_06.HuaKieuLam.services.CartService;
+import Nhom_06.HuaKieuLam.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +15,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/cart")
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
+    private final UserService userService;
     private final IInvoiceRepository invoiceRepository;
 
     @GetMapping
@@ -52,15 +56,32 @@ public class CartController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(HttpSession session, Model model) {
+    public String checkout(HttpSession session, Model model, Authentication authentication) {
+        // Lấy tổng số tiền từ giỏ hàng
         double totalAmount = cartService.getSumPrice(session);
         model.addAttribute("totalAmount", totalAmount);
+
+        // Lấy thông tin người dùng từ Authentication
+        String username = authentication.getName();
+        Optional<User> userOpt = userService.findByUsername(username);
+
+        // Kiểm tra nếu người dùng tồn tại
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            model.addAttribute("customerName", user.getUsername()); // hoặc user.getFullName() nếu có
+        } else {
+            // Xử lý trường hợp người dùng không tồn tại (nếu cần)
+            model.addAttribute("customerName", "");
+        }
+
         return "cart/checkout";
     }
+
 
     @PostMapping("/submit")
     public String submitOrder(
             @RequestParam String customerName,
+            @RequestParam String OrderName,
             @RequestParam String shippingAddress,
             @RequestParam String phoneNumber,
             @RequestParam String email,
@@ -70,6 +91,7 @@ public class CartController {
 
         Invoice invoice = Invoice.builder()
                 .customerName(customerName)
+                .OrderName(OrderName)
                 .shippingAddress(shippingAddress)
                 .phoneNumber(phoneNumber)
                 .email(email)
