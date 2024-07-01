@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Getter
@@ -56,8 +57,7 @@ public class User implements UserDetails {
     private String address;
 
     @Column(name = "date_of_birth")
-    @Past(message = "Date of birth must be a past date", groups = ValidationGroups.OnCreate.class)
-    private Date dateOfBirth;
+        private LocalDate dateOfBirth;
 
     @Column(name = "status", length = 255)
     private String status;

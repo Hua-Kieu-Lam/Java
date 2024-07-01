@@ -103,6 +103,8 @@ public class SecurityConfig {
 
     private final UserService userService;
 
+    private final CustomSavedRequestAwareAuthenticationSuccessHandler customSuccessHandler;
+
     @Bean
     public UserDetailsService userDetailsService() {
         return userService;
@@ -126,7 +128,9 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error",
-                                "/products","/categories", "/cart", "/cart/**","/forgot-password", "/reset-password","/contact/**","/about/**","/css/**","/images/**","/img/**","/js/**","/lib/**","/scss/**","/upload/**")
+                                "/products","/categories", "/cart", "/cart/**","/forgot-password", "/reset-password",
+                                "/contact/**","/about/**","/css/**","/images/**","/img/**","/js/**","/lib/**",
+                                "/scss/**","/upload/**")
 
                         .permitAll()
                         .requestMatchers("/products/edit/**", "/products/add", "/products/delete","/categories/**")
@@ -146,7 +150,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/")
+                        .successHandler(customSuccessHandler)
                         .failureUrl("/login?error")
                         .permitAll()
                 )

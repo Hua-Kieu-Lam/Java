@@ -1,0 +1,42 @@
+<!-- preview.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Preview</title>
+</head>
+<body>
+<h2>Product Preview</h2>
+    <form th:action="@{/products/confirm-upload}" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>Price</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Alcohol</th>
+            <th>Calories per Gram</th>
+            <th>Carbs</th>
+            <th>Fat</th>
+            <th>Protein</th>
+            <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Loop through each product in productWrapper -->
+        <tr th:each="product : ${productWrapper.products}">
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.category.name}"></td> <!-- Assuming category has a 'name' property -->
+            <td th:text="${product.alcohol}"></td>
+            <td th:text="${product.caloriesPerGram}"></td>
+            <td th:text="${product.carbs}"></td>
+            <td th:text="${product.fat}"></td>
+            <td th:text="${product.protein}"></td>
+            <td th:text="${product.quantity}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">Confirm</button>
+</form>
+</body>
+</html>
