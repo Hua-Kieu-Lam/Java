@@ -23,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +43,6 @@ public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final CartService cartService;
-    private final ResourceLoader resourceLoader;
 
     @GetMapping
     public String showAllProducts(@NonNull Model model,
@@ -51,7 +51,11 @@ public class ProductController {
                                @RequestParam(defaultValue = "20")
                                Integer pageSize,
                                @RequestParam(defaultValue = "id")
-                               String sortBy) {
+                               String sortBy,
+                                  HttpSession session) {
+        var cart = cartService.getCart(session);
+        model.addAttribute("cart", cartService.getCart(session));
+        model.addAttribute("totalPrice", cartService.getSumPrice(session));
         model.addAttribute("products", productService.getAllProducts(pageNo,
                 pageSize, sortBy));
         model.addAttribute("currentPage", pageNo);
@@ -125,17 +129,28 @@ public String addProduct(
 }
 
 
-    @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable long id) {
-        productService.getProductById(id)
-                .ifPresentOrElse(
-                        product -> productService.deleteProductById(id),
-                        () -> {
-                            throw new IllegalArgumentException("Product not found");
-                        });
-        return "redirect:/products";
+//    @GetMapping("/delete/{id}")
+//    public String deleteProduct(@PathVariable long id) {
+//        productService.getProductById(id)
+//                .ifPresentOrElse(
+//                        product -> productService.deleteProductById(id),
+//                        () -> {
+//                            throw new IllegalArgumentException("Product not found");
+//                        });
+//        return "redirect:/products";
+//    }
+@GetMapping("/delete/{id}")
+public String deleteProduct(@PathVariable("id") Long id, Model model) {
+    try {
+        // Logic xóa sản phẩm
+        productService.deleteProductById(id);
+        model.addAttribute("successProductId", id);
+    } catch (Exception e) {
+        model.addAttribute("errorProductId", id);
+        model.addAttribute("errorMessage", "Error occurred while deleting product with id: " + id);
     }
-
+    return "redirect:/products";
+}
     @GetMapping("/edit/{id}")
     public String editProductForm(@NonNull Model model, @PathVariable long id) {
         var product = productService.getProductById(id);
@@ -196,7 +211,6 @@ public String editProduct(
             }
             product.setImageUrl("/images/" + fileName);
         } else {
-            // Nếu không tải lên ảnh mới, giữ lại ảnh cũ
             Product existingProduct = productService.getProductById(product.getId())
                     .orElseThrow(() -> new IllegalArgumentException("Product not found"));
             product.setImageUrl(existingProduct.getImageUrl());
