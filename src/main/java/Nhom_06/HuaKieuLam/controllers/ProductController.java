@@ -3,12 +3,17 @@ package Nhom_06.HuaKieuLam.controllers;
 import Nhom_06.HuaKieuLam.daos.Item;
 import Nhom_06.HuaKieuLam.entities.Category;
 import Nhom_06.HuaKieuLam.entities.Product;
+import Nhom_06.HuaKieuLam.entities.ProductWrapper;
 import Nhom_06.HuaKieuLam.services.CartService;
 import Nhom_06.HuaKieuLam.services.CategoryService;
 import Nhom_06.HuaKieuLam.services.ProductService;
 import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
@@ -27,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -250,5 +256,69 @@ public String editProduct(
         model.addAttribute("categories",
                 categoryService.getAllCategories());
         return "product/list";
+    }
+
+    //upload file ex
+    @GetMapping("/upload-excel")
+    public String uploadExcelForm() {
+        return "form";
+    }
+
+    @PostMapping("/upload-excel")
+    public String uploadExcel(@RequestParam("file") MultipartFile file, HttpSession session, Model model) {
+        if (file.isEmpty()) {
+            model.addAttribute("message", "Please select a file to upload.");
+            return "form";
+        }
+
+        try (InputStream inputStream = file.getInputStream()) {
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            List<Product> products = new ArrayList<>();
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    continue; // Skip header row
+                }
+                Product product = new Product();
+                product.setTitle(row.getCell(0).getStringCellValue());
+                product.setPrice(row.getCell(1).getNumericCellValue());
+                product.setCaloriesPerGram(row.getCell(2).getNumericCellValue());
+                product.setProtein(row.getCell(3).getNumericCellValue());
+                product.setCarbs(row.getCell(4).getNumericCellValue());
+                product.setFat(row.getCell(5).getNumericCellValue());
+                product.setAlcohol(row.getCell(6).getNumericCellValue());
+                product.setQuantity((int) row.getCell(7).getNumericCellValue());
+
+                long categoryId = (long) row.getCell(8).getNumericCellValue();
+                Optional<Category> categoryOptional = categoryService.getCategoryById(categoryId);
+                product.setCategory(categoryOptional.orElse(null));
+                products.add(product);
+            }
+
+            ProductWrapper productWrapper = new ProductWrapper();
+            productWrapper.setProducts(products);
+
+            session.setAttribute("productWrapper", productWrapper);
+            model.addAttribute("productWrapper", productWrapper);
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "product/preview";
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("message", "An error occurred while processing the file.");
+            return "form";
+        }
+    }
+
+    @PostMapping("/confirm-upload")
+    public String confirmUpload(HttpSession session) {
+        ProductWrapper productWrapper = (ProductWrapper) session.getAttribute("productWrapper");
+        if (productWrapper != null && productWrapper.getProducts() != null) {
+            for (Product product : productWrapper.getProducts()) {
+                productService.addProduct(product);
+            }
+            session.removeAttribute("productWrapper");
+        }
+        return "redirect:/products";
     }
 }

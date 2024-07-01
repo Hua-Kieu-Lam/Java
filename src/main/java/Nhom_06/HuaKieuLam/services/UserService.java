@@ -5,6 +5,7 @@ import Nhom_06.HuaKieuLam.entities.User;
 import Nhom_06.HuaKieuLam.entities.VerificationToken;
 import Nhom_06.HuaKieuLam.repositories.IRoleRepository;
 import Nhom_06.HuaKieuLam.repositories.IUserRepository;
+import Nhom_06.HuaKieuLam.repositories.UserRepository;
 import Nhom_06.HuaKieuLam.repositories.VerificationTokenRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -84,6 +86,9 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
     }
+
+
+
 
     // Get currently authenticated user
     public User getCurrentUser() {
@@ -177,5 +182,29 @@ public class UserService implements UserDetailsService {
     // Generate random OTP
     private String generateOtp() {
         return UUID.randomUUID().toString().substring(0, 6); // Generate UUID and take first 6 characters
+    }
+
+    //profile
+
+    public User getUserProfile(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public void updateUserProfile(User updatedUser) {
+        User userToUpdate = userRepository.findByUsername(updatedUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        userToUpdate.setEmail(updatedUser.getEmail());
+        userToUpdate.setPhone(updatedUser.getPhone());
+        userToUpdate.setAddress(updatedUser.getAddress());
+        userToUpdate.setDateOfBirth(updatedUser.getDateOfBirth());
+
+        userRepository.save(userToUpdate);
+    }
+
+    //danh sách người dùng
+    public List<User> getAllUsers() {
+        return userRepository.findAll(); // Sử dụng JpaRepository để lấy tất cả người dùng
     }
 }

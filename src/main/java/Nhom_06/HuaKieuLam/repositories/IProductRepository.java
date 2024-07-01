@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IProductRepository extends PagingAndSortingRepository<Product, Long>, JpaRepository<Product, Long> {
@@ -32,4 +33,5 @@ public interface IProductRepository extends PagingAndSortingRepository<Product, 
     @Query("UPDATE Product b SET b.imageUrl = :imageUrl WHERE b.id = :id")
     void save(@Param("id") Long id, @Param("image") String imageUrl);
 
+    Optional<Product> findByTitle(String title);
 }

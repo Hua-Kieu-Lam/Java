@@ -34,6 +34,8 @@ public class Product {
     private Double fat;
     @Column(name = "alcohol")
     private Double alcohol;
+    @Column(name = "quantity")
+    private int quantity;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ToString.Exclude

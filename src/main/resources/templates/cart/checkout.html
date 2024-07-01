@@ -12,8 +12,12 @@
     <h1>Place Your Order</h1>
     <form id="orderForm" th:action="@{/cart/submit}" method="post">
         <div class="mb-3">
-            <label for="customerName" class="form-label">Your Name:</label>
-            <input type="text" id="customerName" name="customerName" class="form-control" required>
+            <label for="customerName" class="form-label">Tên người dùng:</label>
+            <input type="text" id="customerName" name="customerName" class="form-control" th:value="${customerName}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="OrderName" class="form-label">Tên người đặt hàng:</label>
+            <input type="text" id="OrderName" name="OrderName" class="form-control" th:value="${OrderName}" required>
         </div>
         <div class="mb-3">
             <label for="shippingAddress" class="form-label">Shipping Address:</label>

@@ -24,6 +24,9 @@ public class Invoice {
     @Column(name="customer_name")
     private String customerName;
 
+    @Column(name="Order_name")
+    private String OrderName;
+
     @Column(name = "shipping_address")
     private String shippingAddress;
 
