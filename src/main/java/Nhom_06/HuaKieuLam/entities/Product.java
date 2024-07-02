@@ -1,6 +1,7 @@
 package Nhom_06.HuaKieuLam.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -20,22 +21,37 @@ public class Product {
     private Long id;
     @Column(name = "title", length = 50, nullable = false)
     private String title;
+
     @Column(name = "price")
     private Double price;
+
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Positive(message = "Calories must be greater than 0")
     @Column(name = "caloriesPerGram")
     private Double caloriesPerGram;
+
+//    @Positive(message = "Protein must be greater than 0")
     @Column(name = "protein")
     private Double protein;
+
+//    @Positive(message = "Carbs must be greater than 0")
     @Column(name = "carbs")
     private Double carbs;
+
+//    @Positive(message = "Fat must be greater than 0")
     @Column(name = "fat")
     private Double fat;
+
+//    @Positive(message = "Alcohol must be greater than 0")
     @Column(name = "alcohol")
     private Double alcohol;
+
+    @Positive(message = "Quantity must be greater than 0")
     @Column(name = "quantity")
     private int quantity;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ToString.Exclude

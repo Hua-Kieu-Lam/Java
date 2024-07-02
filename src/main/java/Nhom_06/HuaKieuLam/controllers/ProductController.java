@@ -226,19 +226,33 @@ public String editProduct(
     return "redirect:/products";
 }
 
-
-    @PostMapping("/add-to-cart")
-    public String addToCart(HttpSession session,
-                            @RequestParam long id,
-                            @RequestParam String name,
-                            @RequestParam double price,
-                            @RequestParam(defaultValue = "1") int
-                                    quantity) {
+//    @PostMapping("/add-to-cart")
+//    public String addToCart(HttpSession session,
+//                            @RequestParam long id,
+//                            @RequestParam String name,
+//                            @RequestParam double price,
+//                            @RequestParam double caloriesPerGram,
+//                            @RequestParam(defaultValue = "1") int quantity) {
+//        var cart = cartService.getCart(session);
+//        cart.addItems(new Item(id, name, price, quantity, caloriesPerGram));
+//        cartService.updateCart(session, cart);
+//        return "redirect:/products";
+//    }
+@PostMapping("/add-to-cart")
+public String addToCart(HttpSession session,
+                        @RequestParam long id,
+                        @RequestParam String name,
+                        @RequestParam double price,
+                        @RequestParam(defaultValue = "1") int quantity) {
+    Optional<Product> productOpt = productService.getProductById(id);
+    if (productOpt.isPresent()) {
+        Product product = productOpt.get();
         var cart = cartService.getCart(session);
-        cart.addItems(new Item(id, name, price, quantity));
+        cart.addItems(new Item(id, name, price, quantity, product.getFat(), product.getProtein(), product.getCarbs(), product.getAlcohol(), product.getCaloriesPerGram()));
         cartService.updateCart(session, cart);
-        return "redirect:/products";
     }
+    return "redirect:/products";
+}
 
     @GetMapping("/search")
     public String searchProduct(

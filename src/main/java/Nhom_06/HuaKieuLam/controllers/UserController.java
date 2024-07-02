@@ -43,8 +43,8 @@ public class UserController {
     }
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") User user, // Validate đối tượng User
-                                   @NotNull BindingResult bindingResult, // Kết quả của quá trình validate
- Model model) {
+                           @NotNull BindingResult bindingResult, // Kết quả của quá trình validate
+                           Model model) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             bindingResult.rejectValue("confirmPassword", "error.user", "Passwords do not match");
         }

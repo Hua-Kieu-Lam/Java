@@ -57,7 +57,7 @@ public class User implements UserDetails {
     private String address;
 
     @Column(name = "date_of_birth")
-        private LocalDate dateOfBirth;
+        private Date dateOfBirth;
 
     @Column(name = "status", length = 255)
     private String status;

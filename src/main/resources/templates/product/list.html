@@ -42,69 +42,41 @@
         }
         .cart-container {
             position: fixed;
-            bottom: 40px;
-            right: 20px;
+            bottom: 80px;
+            left: 20px;
             background-color: white;
             border: 1px solid #ccc;
             padding: 10px;
-            max-width: 600px;
+            max-width: 1200px;
             display: none;
             z-index: 1000;
         }
         .cart-container.show {
             display: block;
         }
+        .back-to-top {
+            position: fixed;
+            right: 90px; /* Khoảng cách từ nút đến phía trái của màn hình */
+            z-index: 1000; /* Đảm bảo nút ở phía trên các thành phần khác */
+            display: none; /* Ẩn nút mặc định, chỉ hiện khi kéo trang */
+        }
+        .fixed-button {
+            position: fixed;
+            bottom: 20px; /* Khoảng cách từ nút đến phía dưới của màn hình */
+            left: 20px; /* Khoảng cách từ nút đến phía trái của màn hình */
+            z-index: 1000; /* Đảm bảo nút ở phía trên các thành phần khác */
+        }
     </style>
 </head>
 
 
 <body>
-<button type="button" class="btn btn-primary mt-3 mb-3" onclick="toggleCart()">Toggle Cart</button>
-<!-- Cart content container -->
-<div class="cart-container">
-    <h2>Your Cart</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Price</th>
-            <th scope="col">Total</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${cart.cartItems}">
-            <td th:text="${item.productId}"></td>
-            <td th:text="${item.productName}"></td>
-            <td>
-                <label>
-                    <input type="number" min="1"
-                           th:value="${item.quantity}"
-                           th:attr="data-id=${item.productId},data-price=${item.price}"
-                           class="form-control quantity">
-                </label>
-            </td>
-            <td th:text="${item.price}"></td>
-            <td th:text="${item.price * item.quantity}" class="item-total"></td>
-            <td>
-                <a class="btn btn-danger"
-                   th:href="@{/cart/removeFromCart/{id}(id=${item.productId})}">
-                    Remove
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div>Total: <span id="totalPrice" th:text="${totalPrice}"></span></div>
-</div>
+
 <!-- Spinner Start -->
 <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
     <div class="spinner-grow text-primary" role="status"></div>
 </div>
 <!-- Spinner End -->
-
 
 <!-- Navbar start -->
 <div class="container-fluid fixed-top">
@@ -238,19 +210,131 @@
 <!-- Hero End -->
 
 
+<button type="button" class="fixed-button btn btn-primary mt-3 mb-3" onclick="toggleCart()">Toggle Cart</button>
+
+<!--&lt;!&ndash; Cart content container &ndash;&gt;-->
+<!--<div class="cart-container">-->
+<!--    <h2>Your Cart</h2>-->
+<!--    <table class="table">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th scope="col">ID</th>-->
+<!--            <th scope="col">Name</th>-->
+<!--            <th scope="col">Quantity</th>-->
+<!--            <th scope="col">Price</th>-->
+<!--            <th scope="col">Total</th>-->
+<!--            <th scope="col">Calories</th>-->
+<!--            <th scope="col">Protein</th>-->
+<!--            <th scope="col">Carbs</th>-->
+<!--            <th scope="col">Fat</th>-->
+<!--            <th scope="col">Alcohol</th>-->
+<!--            <th scope="col">Action</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="item : ${cart.cartItems}">-->
+<!--            <td th:text="${item.productId}"></td>-->
+<!--            <td th:text="${item.productName}"></td>-->
+<!--            <td>-->
+<!--                <label>-->
+<!--                    <input type="number" min="1"-->
+<!--                           th:value="${item.quantity}"-->
+<!--                           th:attr="data-id=${item.productId},data-price=${item.price}"-->
+<!--                           class="form-control quantity">-->
+<!--                </label>-->
+<!--            </td>-->
+<!--            <td th:text="${item.price}"></td>-->
+<!--            <td th:text="${item.price * item.quantity}" class="item-total"></td>-->
+<!--            <td th:text="${item.caloriesPerGram * item.quantity * 10}"></td>-->
+<!--            <td th:text="${item.protein * item.quantity * 10}"></td>-->
+<!--            <td th:text="${item.carbs * item.quantity * 10}"></td>-->
+<!--            <td th:text="${item.fat * item.quantity * 10}"></td>-->
+<!--            <td th:text="${item.alcohol * item.quantity * 10}"></td>-->
+<!--            <td>-->
+<!--                <a class="btn btn-danger"-->
+<!--                   th:href="@{/cart/removeFromCart/{id}(id=${item.productId})}">-->
+<!--                    Remove-->
+<!--                </a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <div>Total: <span id="totalPrice" th:text="${totalPrice}"></span></div>-->
+<!--</div>-->
+<!-- Cart content container -->
+<!-- Cart content container -->
+<div class="cart-container">
+    <h2>Your Cart</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            <th scope="col">Total</th>
+            <th scope="col">Calories</th>
+            <th scope="col">Protein</th>
+            <th scope="col">Carbs</th>
+            <th scope="col">Fat</th>
+            <th scope="col">Alcohol</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cart.cartItems}">
+            <td th:text="${item.productId}"></td>
+            <td th:text="${item.productName}"></td>
+            <td>
+                <label>
+                    <input type="number" min="1"
+                           th:value="${item.quantity}"
+                           th:attr="data-id=${item.productId},data-price=${item.price}"
+                           class="form-control quantity" readonly>
+                </label>
+            </td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.price * item.quantity}" class="item-total"></td>
+            <td th:text="${item.caloriesPerGram * item.quantity * 10}"></td>
+            <td th:text="${item.protein * item.quantity * 10}"></td>
+            <td th:text="${item.carbs * item.quantity * 10}"></td>
+            <td th:text="${item.fat * item.quantity * 10}"></td>
+            <td th:text="${item.alcohol * item.quantity * 10}"></td>
+            <td>
+                <a class="btn btn-danger"
+                   th:href="@{/cart/removeFromCart/{id}(id=${item.productId})}">
+                    Remove
+                </a>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th colspan="5">Total</th>
+            <th id="totalCalories"></th>
+            <th id="totalProtein"></th>
+            <th id="totalCarbs"></th>
+            <th id="totalFat"></th>
+            <th id="totalAlcohol"></th>
+            <th></th>
+        </tr>
+        </tfoot>
+    </table>
+    <div>Total Price: <span id="totalPrice" th:text="${totalPrice}"></span></div>
+</div>
+
 
 <!-- Fruits Shop Start-->
-
-
 <div class="tab-class text-center">
     <h1>Our Organic Products</h1>
     <div class="container">
-
-        <a class="btn btn-outline-success" sec:authorize="hasAuthority('ADMIN')" href="/products/add">Add</a>
-        <form class="d-flex" enctype="multipart/form-data" sec:authorize="hasAuthority('ADMIN')" th:action="@{/products/upload-excel}" method="POST">
-            <input class="form-control me-2" type="file" name="file" accept=".xls,.xlsx" required>
-            <button class="btn btn-outline-success" type="submit">Upload</button>
-        </form>
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-success m-3" sec:authorize="hasAuthority('ADMIN')" href="/products/add">Add Product</a>
+            <form class="d-flex" enctype="multipart/form-data" sec:authorize="hasAuthority('ADMIN')" th:action="@{/products/upload-excel}" method="POST">
+                <input class="form-control me-2" type="file" name="file" accept=".xls,.xlsx" required>
+                <button class="btn btn-outline-success" type="submit">Upload</button>
+            </form>
+        </div>
 
         <!-- Product List -->
         <div class="row">
@@ -262,7 +346,7 @@
                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;" th:text="${product.category.name}">Fruits</div>
                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                         <h4 th:text="${product.title}">Grapes</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
+                        <p>Rau củ và trái cây là nguồn dinh dưỡng tự nhiên, cung cấp nhiều vitamin, khoáng chất và chất xơ thiết yếu cho sức khỏe.</p>
 
                         <div class="d-flex justify-content-center flex-lg-wrap text-center mb-3">
                             <p class="text-dark fs-5 fw-bold mb-0"  th:text="${product.price} + ' / kg'"></p>
@@ -557,6 +641,55 @@
         cartContainer.classList.toggle('show');
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        function updateTotals() {
+            let totalCalories = 0;
+            let totalProtein = 0;
+            let totalCarbs = 0;
+            let totalFat = 0;
+            let totalAlcohol = 0;
+
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const quantityInput = row.querySelector('input.quantity');
+                if (!quantityInput) return; // Skip if quantity input is not found
+
+                const quantity = parseFloat(quantityInput.value) || 0;
+                const caloriesElement = row.querySelector('td:nth-child(6)');
+                const proteinElement = row.querySelector('td:nth-child(7)');
+                const carbsElement = row.querySelector('td:nth-child(8)');
+                const fatElement = row.querySelector('td:nth-child(9)');
+                const alcoholElement = row.querySelector('td:nth-child(10)');
+
+                const calories = caloriesElement ? parseFloat(caloriesElement.textContent) : 0;
+                const protein = proteinElement ? parseFloat(proteinElement.textContent) : 0;
+                const carbs = carbsElement ? parseFloat(carbsElement.textContent) : 0;
+                const fat = fatElement ? parseFloat(fatElement.textContent) : 0;
+                const alcohol = alcoholElement ? parseFloat(alcoholElement.textContent) : 0;
+
+                totalCalories += calories;
+                totalProtein += protein;
+                totalCarbs += carbs;
+                totalFat += fat;
+                totalAlcohol += alcohol;
+            });
+
+            document.getElementById('totalCalories').textContent = totalCalories;
+            document.getElementById('totalProtein').textContent = totalProtein;
+            document.getElementById('totalCarbs').textContent = totalCarbs;
+            document.getElementById('totalFat').textContent = totalFat;
+            document.getElementById('totalAlcohol').textContent = totalAlcohol;
+        }
+
+        document.querySelectorAll('input.quantity').forEach(input => {
+            input.addEventListener('input', updateTotals);
+        });
+
+        updateTotals();
+    });
+</script>
+
+
 <!-- JavaScript Libraries -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
