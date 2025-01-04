@@ -57,20 +57,16 @@ public class CartController {
 
     @GetMapping("/checkout")
     public String checkout(HttpSession session, Model model, Authentication authentication) {
-        // Lấy tổng số tiền từ giỏ hàng
         double totalAmount = cartService.getSumPrice(session);
         model.addAttribute("totalAmount", totalAmount);
 
-        // Lấy thông tin người dùng từ Authentication
         String username = authentication.getName();
         Optional<User> userOpt = userService.findByUsername(username);
 
-        // Kiểm tra nếu người dùng tồn tại
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            model.addAttribute("customerName", user.getUsername()); // hoặc user.getFullName() nếu có
+            model.addAttribute("customerName", user.getUsername());
         } else {
-            // Xử lý trường hợp người dùng không tồn tại (nếu cần)
             model.addAttribute("customerName", "");
         }
 

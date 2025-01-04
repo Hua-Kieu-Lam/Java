@@ -40,9 +40,7 @@ public class User implements UserDetails {
     private String confirmPassword;
 
     @Column(name = "email", length = 50, unique = true)
-    @NotBlank(message = "Email is required", groups = ValidationGroups.OnCreate.class)
-    @Size(min = 1, max = 50, message = "Email must be between 1 and 50 characters", groups = ValidationGroups.OnCreate.class)
-    @Email(groups = ValidationGroups.OnCreate.class)
+    @Email(message = "Email should be valid", groups = ValidationGroups.OnCreate.class)
     private String email;
 
     @Column(name = "phone", length = 10)
@@ -57,7 +55,7 @@ public class User implements UserDetails {
     private String address;
 
     @Column(name = "date_of_birth")
-        private LocalDate dateOfBirth;
+        private Date dateOfBirth;
 
     @Column(name = "status", length = 255)
     private String status;

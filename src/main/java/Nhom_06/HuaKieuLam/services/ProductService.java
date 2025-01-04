@@ -46,7 +46,7 @@ public class ProductService {
         existingProduct.setCarbs(product.getCarbs());
         existingProduct.setFat(product.getFat());
         existingProduct.setAlcohol(product.getAlcohol());
-
+        existingProduct.setQuantity(product.getQuantity());
         productRepository.save(existingProduct);
     }
 

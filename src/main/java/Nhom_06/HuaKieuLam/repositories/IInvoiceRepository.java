@@ -19,5 +19,4 @@ public interface IInvoiceRepository extends JpaRepository<Invoice, Long>
     List<Invoice> searchOrder(@Param("keyword") String keyword);
 
     List<Invoice> findByCustomerName(String username);
-
 }

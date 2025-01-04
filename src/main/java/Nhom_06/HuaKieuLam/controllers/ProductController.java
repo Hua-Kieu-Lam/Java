@@ -48,7 +48,7 @@ public class ProductController {
     public String showAllProducts(@NonNull Model model,
                                @RequestParam(defaultValue = "0")
                                Integer pageNo,
-                               @RequestParam(defaultValue = "20")
+                               @RequestParam(defaultValue = "100")
                                Integer pageSize,
                                @RequestParam(defaultValue = "id")
                                String sortBy,
@@ -84,61 +84,50 @@ public class ProductController {
         return "product/add";
     }
 
-@PostMapping("/add")
-public String addProduct(
-        @Validated @ModelAttribute("product") Product product,
-        @NonNull BindingResult bindingResult,
-        @RequestParam("image") MultipartFile multipartFile,
-        Model model) {
+    @PostMapping("/add")
+    public String addProduct(
+            @Validated @ModelAttribute("product") Product product,
+            @NonNull BindingResult bindingResult,
+            @RequestParam("image") MultipartFile multipartFile,
+            Model model) {
 
-    if (bindingResult.hasErrors()) {
-        var errors = bindingResult.getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .toArray(String[]::new);
-        model.addAttribute("errors", errors);
-        model.addAttribute("categories",
-                categoryService.getAllCategories());
-        return "product/add";
-    }
-
-    try {
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        String uploadDir = "src/main/resources/static/images/";
-        Path uploadPath = Paths.get(uploadDir);
-
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+        if (bindingResult.hasErrors()) {
+            var errors = bindingResult.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toArray(String[]::new);
+            model.addAttribute("errors", errors);
+            model.addAttribute("categories",
+                    categoryService.getAllCategories());
+            return "product/add";
         }
 
-        // Sử dụng try-with-resources để đảm bảo rằng InputStream được đóng đúng cách
-        try (InputStream inputStream = multipartFile.getInputStream()) {
-            Path filePath = uploadPath.resolve(fileName);
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            String uploadDir = "src/main/resources/static/images/";
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Sử dụng try-with-resources để đảm bảo rằng InputStream được đóng đúng cách
+            try (InputStream inputStream = multipartFile.getInputStream()) {
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            }
+            product.setImageUrl("/images/" + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Có lỗi xảy ra.");
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "product/add";
         }
-        product.setImageUrl("/images/" + fileName);
-    } catch (IOException e) {
-        e.printStackTrace();
-        model.addAttribute("error", "Có lỗi xảy ra.");
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "product/add";
+
+        productService.addProduct(product);
+        return "redirect:/products";
     }
 
-    productService.addProduct(product);
-    return "redirect:/products";
-}
-
-
-//    @GetMapping("/delete/{id}")
-//    public String deleteProduct(@PathVariable long id) {
-//        productService.getProductById(id)
-//                .ifPresentOrElse(
-//                        product -> productService.deleteProductById(id),
-//                        () -> {
-//                            throw new IllegalArgumentException("Product not found");
-//                        });
-//        return "redirect:/products";
-//    }
 @GetMapping("/delete/{id}")
 public String deleteProduct(@PathVariable("id") Long id, Model model) {
     try {
@@ -159,31 +148,10 @@ public String deleteProduct(@PathVariable("id") Long id, Model model) {
                 categoryService.getAllCategories());
         return "product/edit";
     }
-
-//    @PostMapping("/edit")
-//    public String editProduct(@Validated @ModelAttribute("product") Product product,
-//                           @NonNull BindingResult bindingResult,
-//                           Model model) {
-//        if (bindingResult.hasErrors()) {
-//            var errors = bindingResult.getAllErrors()
-//                    .stream()
-//                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-//                    .toArray(String[]::new);
-//            model.addAttribute("errors", errors);
-//            model.addAttribute("categories",
-//                    categoryService.getAllCategories());
-//            return "product/edit";
-//        }
-//        productService.updateProduct(product);
-//        return "redirect:/products";
-//    }
 @PostMapping("/edit")
-public String editProduct(
-        @Validated @ModelAttribute("product") Product product,
-        @NonNull BindingResult bindingResult,
+public String editProduct(@Validated @ModelAttribute("product") Product product, @NonNull BindingResult bindingResult,
         @RequestParam("image") MultipartFile multipartFile,
         Model model) {
-
     if (bindingResult.hasErrors()) {
         var errors = bindingResult.getAllErrors()
                 .stream()
@@ -193,7 +161,6 @@ public String editProduct(
         model.addAttribute("categories", categoryService.getAllCategories());
         return "product/edit";
     }
-
     try {
         if (!multipartFile.isEmpty()) {
             // Xử lý lưu ảnh mới nếu có tải lên
@@ -221,24 +188,37 @@ public String editProduct(
         model.addAttribute("categories", categoryService.getAllCategories());
         return "product/edit";
     }
-
     productService.updateProduct(product);
     return "redirect:/products";
 }
 
-
-    @PostMapping("/add-to-cart")
-    public String addToCart(HttpSession session,
-                            @RequestParam long id,
-                            @RequestParam String name,
-                            @RequestParam double price,
-                            @RequestParam(defaultValue = "1") int
-                                    quantity) {
+//    @PostMapping("/add-to-cart")
+//    public String addToCart(HttpSession session,
+//                            @RequestParam long id,
+//                            @RequestParam String name,
+//                            @RequestParam double price,
+//                            @RequestParam double caloriesPerGram,
+//                            @RequestParam(defaultValue = "1") int quantity) {
+//        var cart = cartService.getCart(session);
+//        cart.addItems(new Item(id, name, price, quantity, caloriesPerGram));
+//        cartService.updateCart(session, cart);
+//        return "redirect:/products";
+//    }
+@PostMapping("/add-to-cart")
+public String addToCart(HttpSession session,
+                        @RequestParam long id,
+                        @RequestParam String name,
+                        @RequestParam double price,
+                        @RequestParam(defaultValue = "1") int quantity) {
+    Optional<Product> productOpt = productService.getProductById(id);
+    if (productOpt.isPresent()) {
+        Product product = productOpt.get();
         var cart = cartService.getCart(session);
-        cart.addItems(new Item(id, name, price, quantity));
+        cart.addItems(new Item(id, name, price, quantity, product.getFat(), product.getProtein(), product.getCarbs(), product.getAlcohol(), product.getCaloriesPerGram()));
         cartService.updateCart(session, cart);
-        return "redirect:/products";
     }
+    return "redirect:/products";
+}
 
     @GetMapping("/search")
     public String searchProduct(

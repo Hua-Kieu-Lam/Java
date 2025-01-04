@@ -141,11 +141,6 @@
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">Shop Detail</h1>
-    <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-        <li class="breadcrumb-item active text-white">Shop Detail</li>
-    </ol>
 </div>
 <!-- Single Page Header End -->
 
@@ -156,22 +151,76 @@
         <div class="row g-4 mb-5">
             <div class="col-lg-8 col-xl-9">
                 <div class="row g-4">
-                    <div class="container">
+<!--                    <div class="container">-->
+<!--                        <h1>Product Details</h1>-->
+<!--                        <div class="product-details">-->
+<!--                            <img th:src="@{${product.imageUrl}}" alt="Product Image" class="product-image"/>-->
+<!--                            <div class="product-info">-->
+<!--                                <h2 th:text="${product.title}">Product Title</h2>-->
+<!--                                <p><strong>Price:</strong> $<span th:text="${product.price}">0.00</span></p>-->
+<!--                                <p><strong>Quantity:</strong> $<span th:text="${product.quantity}">0</span></p>-->
+<!--                                <p><strong>Category:</strong> <span th:text="${product.category.name}">Category</span></p>-->
+<!--                                <p><strong>Calories Per Gram:</strong> <span th:text="${product.caloriesPerGram}">0</span></p>-->
+<!--                                <p><strong>Protein:</strong> <span th:text="${product.protein}">0</span></p>-->
+<!--                                <p><strong>Carbs:</strong> <span th:text="${product.carbs}">0</span></p>-->
+<!--                                <p><strong>Fat:</strong> <span th:text="${product.fat}">0</span></p>-->
+<!--                                <p><strong>Alcohol:</strong> <span th:text="${product.alcohol}">0</span></p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <a href="/products" class="btn">Back to Products</a>-->
+<!--                    </div>-->
+                    <div class="container mt-5">
+                        <a href="/products" class="btn btn-danger mb-5">Back to Products</a>
+
                         <h1>Product Details</h1>
                         <div class="product-details">
-                            <img th:src="@{${product.imageUrl}}" alt="Product Image" class="product-image"/>
+                            <img th:src="@{${product.imageUrl}}" alt="Product Image" class="product-image w-75"/>
                             <div class="product-info">
                                 <h2 th:text="${product.title}">Product Title</h2>
-                                <p><strong>Price:</strong> $<span th:text="${product.price}">0.00</span></p>
-                                <p><strong>Category:</strong> <span th:text="${product.category.name}">Category</span></p>
-                                <p><strong>Calories Per Gram:</strong> <span th:text="${product.caloriesPerGram}">0</span></p>
-                                <p><strong>Protein:</strong> <span th:text="${product.protein}">0</span></p>
-                                <p><strong>Carbs:</strong> <span th:text="${product.carbs}">0</span></p>
-                                <p><strong>Fat:</strong> <span th:text="${product.fat}">0</span></p>
-                                <p><strong>Alcohol:</strong> <span th:text="${product.alcohol}">0</span></p>
                             </div>
                         </div>
-                        <a href="/products" class="btn">Back to Products</a>
+                        <table class="table table-bordered mt-4">
+                            <thead>
+                            <tr>
+                                <th>Trường</th>
+                                <th>Dữ liệu</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Price</td>
+                                <td th:text="${product.price}">$0.00 </td>
+                            </tr>
+                            <tr>
+                                <td>Quantity</td>
+                                <td th:text="${product.quantity}">0</td>
+                            </tr>
+                            <tr>
+                                <td>Category</td>
+                                <td th:text="${product.category.name}">Category</td>
+                            </tr>
+                            <tr>
+                                <td>Calories Per Gram</td>
+                                <td th:text="${product.caloriesPerGram}">0</td>
+                            </tr>
+                            <tr>
+                                <td>Protein</td>
+                                <td th:text="${product.protein}">0</td>
+                            </tr>
+                            <tr>
+                                <td>Carbs</td>
+                                <td th:text="${product.carbs}">0</td>
+                            </tr>
+                            <tr>
+                                <td>Fat</td>
+                                <td th:text="${product.fat}">0</td>
+                            </tr>
+                            <tr>
+                                <td>Alcohol</td>
+                                <td th:text="${product.alcohol}">0</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="col-lg-12">
                         <nav>
@@ -190,52 +239,7 @@
                                     Susp endisse ultricies nisi vel quam suscipit </p>
                                 <p>Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish filefish Antarctic
                                     icefish goldeye aholehole trumpetfish pilot fish airbreathing catfish, electric ray sweeper.</p>
-                                <div class="px-2">
-                                    <div class="row g-4">
-                                        <div class="col-6">
-                                            <div class="row bg-light align-items-center text-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Weight</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">1 kg</p>
-                                                </div>
-                                            </div>
-                                            <div class="row text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Country of Origin</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">Agro Farm</p>
-                                                </div>
-                                            </div>
-                                            <div class="row bg-light text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Quality</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">Organic</p>
-                                                </div>
-                                            </div>
-                                            <div class="row text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Сheck</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">Healthy</p>
-                                                </div>
-                                            </div>
-                                            <div class="row bg-light text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Min Weight</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">250 Kg</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                             <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
                                 <div class="d-flex">
@@ -323,164 +327,22 @@
             <div class="col-lg-4 col-xl-3">
                 <div class="row g-4 fruite">
                     <div class="col-lg-12">
-                        <div class="input-group w-100 mx-auto d-flex mb-4">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
                         <div class="mb-4">
                             <h4>Categories</h4>
                             <ul class="list-unstyled fruite-categorie">
                                 <li>
                                     <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
-                                        <span>(3)</span>
+                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Trái cây</a>
+                                        <span>(15)</span>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
-                                        <span>(5)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
-                                        <span>(2)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
-                                        <span>(8)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
-                                        <span>(5)</span>
+                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Rau củ</a>
+                                        <span>(6)</span>
                                     </div>
                                 </li>
                             </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <h4 class="mb-4">Featured products</h4>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded" style="width: 100px; height: 100px;">
-                                <img src="/img/featur-1.jpg" class="img-fluid rounded" alt="Image">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded" style="width: 100px; height: 100px;">
-                                <img src="/img/featur-2.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded" style="width: 100px; height: 100px;">
-                                <img src="/img/featur-3.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                <img src="/img/vegetable-item-4.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                <img src="/img/vegetable-item-5.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                <img src="/img/vegetable-item-6.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center my-4">
-                            <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
                         </div>
                     </div>
                     <div class="col-lg-12">

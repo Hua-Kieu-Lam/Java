@@ -22,13 +22,6 @@
           th:href="@{/plugins/slick-carousel/slick/slick-theme.css}">
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 
-    <!-- Icon Font Css -->
-    <!--    <link rel="stylesheet" th:href="plugins/icofont/icofont.min.css">-->
-    <!-- Slick Slider  CSS -->
-    <!--    <link rel="stylesheet" th:href="plugins/slick-carousel/slick/slick.css">-->
-    <!--    <link rel="stylesheet" th:href="plugins/slick-carousel/slick/slick-theme.css">-->
-    <!--    <link rel="shortcut icon" type="client/image/x-icon" th:href="/images/favicon.ico" />-->
-    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="client/css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -63,19 +56,11 @@
                                href="/">Home</a>
                         </li>
 
-                        <!--                        <li class="nav-item"><a class="nav-link" href="/products">Danh sách SP</a></li>-->
-                        <!--                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')"><a class="nav-link" href="/products/add">Thêm SP</a></li>-->
-                        <!--                        <li class="nav-item"><a class="nav-link" href="/categories">Danh mục</a></li>-->
-                        <!--                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')"><a class="nav-link" href="/categories/add">Thêm danh mục</a></li>-->
-                        <!--                        <li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a class="nav-link" href="/cart/listOrder">Order Detail</a></li>-->
-                        <!--                        <li sec:authorize="hasAuthority('USER')" class="nav-item"><a class="nav-link" href="/cart/listOrder">My Order</a></li>-->
-                        <!--                      -->
-                        <!--                        <li class="nav-item"><a class="nav-link" href="/cart">Giỏ hàng</a></li>-->
-                        <li class="nav-item"><a class="nav-link" href="/products">Product</a></li>
+                       <li class="nav-item"><a class="nav-link" href="/products">Product</a></li>
                         <li class="nav-item"><a class="nav-link" href="/categories">Category</a></li>
                         <li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a class="nav-link" href="/cart/listOrder">Order Detail</a></li>
                         <li sec:authorize="hasAuthority('USER')" class="nav-item"><a class="nav-link" href="/cart/listOrder">My Order</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/cart">Cart</a></li>
+                        <li sec:authorize="hasAuthority('USER')" class="nav-item"><a class="nav-link" href="/cart">Cart</a></li>
                         <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
 <!--                        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>-->
 
@@ -642,11 +627,22 @@
                     </div>
                 </div>
             </div>
+<!--            <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/0.1.0-beta.4/libs/oversea/index.js"></script>-->
+<!--            <script>-->
+<!--                new CozeWebSDK.WebChatClient({-->
+<!--                    config: {-->
+<!--                        bot_id: '7385056796648095761',-->
+<!--                    },-->
+<!--                    componentProps: {-->
+<!--                        title: 'Coze',-->
+<!--                    },-->
+<!--                });-->
+<!--            </script>-->
             <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/0.1.0-beta.4/libs/oversea/index.js"></script>
             <script>
                 new CozeWebSDK.WebChatClient({
                     config: {
-                        bot_id: '7385056796648095761',
+                        bot_id: '7386480369039753234',
                     },
                     componentProps: {
                         title: 'Coze',
@@ -694,11 +690,6 @@
 
 <script src="~/js/script.js"></script>
 <script src="~/js/contact.js"></script>
-
-
-
-
-
 
 </body>
 </html>

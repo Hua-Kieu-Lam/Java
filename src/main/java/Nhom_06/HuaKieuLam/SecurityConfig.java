@@ -103,7 +103,7 @@ public class SecurityConfig {
 
     private final UserService userService;
 
-    private final CustomSavedRequestAwareAuthenticationSuccessHandler customSuccessHandler;
+//    private final CustomSavedRequestAwareAuthenticationSuccessHandler customSuccessHandler;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -150,7 +150,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .successHandler(customSuccessHandler)
+//                        .successHandler(customSuccessHandler)
                         .failureUrl("/login?error")
                         .permitAll()
                 )

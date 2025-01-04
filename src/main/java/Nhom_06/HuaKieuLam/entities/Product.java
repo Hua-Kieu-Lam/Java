@@ -1,6 +1,9 @@
 package Nhom_06.HuaKieuLam.entities;
 
+import Nhom_06.HuaKieuLam.repositories.ValidationGroups;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -20,22 +23,38 @@ public class Product {
     private Long id;
     @Column(name = "title", length = 50, nullable = false)
     private String title;
+
+    @Min(value = 1000, groups = ValidationGroups.OnCreate.class)
     @Column(name = "price")
     private Double price;
+
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "caloriesPerGram")
     private Double caloriesPerGram;
+
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "protein")
     private Double protein;
+
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "carbs")
     private Double carbs;
+
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "fat")
     private Double fat;
+
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "alcohol")
     private Double alcohol;
+
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "quantity")
     private int quantity;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ToString.Exclude
