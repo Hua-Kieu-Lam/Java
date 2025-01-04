@@ -8,12 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,29 +31,30 @@ public class UserController {
     public String login() {
         return "users/login";
     }
+
     @GetMapping("/register")
     public String register(@NotNull Model model) {
-        model.addAttribute("user", new User()); // Thêm một đối tượng User mới vào model
+        model.addAttribute("user", new User());
         return "users/register";
     }
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("user") User user, // Validate đối tượng User
-                           @NotNull BindingResult bindingResult, // Kết quả của quá trình validate
+    public String register(@Valid @ModelAttribute("user") User user,
+                           @NotNull BindingResult bindingResult,
                            Model model) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             bindingResult.rejectValue("confirmPassword", "error.user", "Passwords do not match");
         }
-        if (bindingResult.hasErrors()) { // Kiểm tra nếu có lỗi validate
+        if (bindingResult.hasErrors()) {
             var errors = bindingResult.getAllErrors()
                     .stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
-            return "users/register"; // Trả về lại view "register" nếu có lỗi
+            return "users/register";
         }
-        userService.save(user); // Lưu người dùng vào cơ sở dữ liệu
-        userService.setDefaultRole(user.getUsername()); // Gán vai trò mặc định cho người dùng
-        return "redirect:/login"; // Chuyển hướng người dùng tới trang "login"
+        userService.save(user);
+        userService.setDefaultRole(user.getUsername());
+        return "redirect:/login";
     }
 
     @GetMapping("/oauth2/loginSuccess")

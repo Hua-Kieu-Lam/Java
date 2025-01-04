@@ -25,7 +25,7 @@
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="quantity">Quantity (Số lượng):</label><span class="text-danger">*</span>
-            <input class="form-control" required type="text" th:field="*{quantity}" id="quantity" placeholder="Enter quantity">
+            <input class="form-control" required min="0" type="number" th:field="*{quantity}" id="quantity" placeholder="Enter quantity">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="category">Category (Danh mục):</label><span class="text-danger">*</span>
@@ -36,24 +36,25 @@
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="caloriesPerGram">Calories per 100g (Calo trên 100g):</label><span class="text-danger">*</span>
-            <input class="form-control" required type="text" th:field="*{caloriesPerGram}" id="caloriesPerGram" placeholder="Enter caloriesPerGram">
+            <input class="form-control" required min="0" type="number" th:field="*{caloriesPerGram}" id="caloriesPerGram" placeholder="Enter caloriesPerGram">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="protein">Protein (Hàm lượng chất đạm):</label>
-            <input class="form-control"  type="text" th:field="*{protein}" id="protein" placeholder="Enter protein">
+            <input class="form-control"  min="0" type="number" th:field="*{protein}" id="protein" placeholder="Enter protein">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="carbs">Carbs (Hàm lượng tinh bột):</label>
-            <input class="form-control"  type="text" th:field="*{carbs}" id="carbs" placeholder="Enter carbs">
+            <input class="form-control"  min="0" type="number" th:field="*{carbs}" id="carbs" placeholder="Enter carbs">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="fat">Fat (Hàm lượng chất béo):</label>
-            <input class="form-control"  type="text" th:field="*{fat}" id="fat" placeholder="Enter fat">
+            <input class="form-control" min="0" type="number" th:field="*{fat}" id="fat" placeholder="Enter fat">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="alcohol">Alcohol (Hàm lượng cồn):</label>
-            <input class="form-control"  type="text" th:field="*{alcohol}" id="alcohol" placeholder="Enter alcohol">
+            <input class="form-control" min="0" type="number" th:field="*{alcohol}" id="alcohol" placeholder="Enter alcohol">
         </div>
+
         <div class="col-6 mb-3">
             <label class="form-label" for="image">Image (Hình ảnh):</label>
             <input class="form-control" type="file" id="image" name="image" required>

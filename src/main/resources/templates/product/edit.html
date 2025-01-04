@@ -195,13 +195,13 @@
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="price">Price:</label><span class="text-danger">*</span>
-            <input class="form-control" required type="text" th:field="*{price}" id="price" placeholder="Enter price">
-            <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            <input class="form-control" required min="1000" type="number" th:field="*{price}" id="price" placeholder="Enter price">
+<!--            <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>-->
+
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="price">Quantity:</label><span class="text-danger">*</span>
-            <input class="form-control" required type="text" th:field="*{quantity}" id="quantity" placeholder="Enter quantity">
-            <span class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+            <input class="form-control" required min="0" type="number" th:field="*{quantity}" id="quantity" placeholder="Enter quantity">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="category">Category:</label><span class="text-danger">*</span>
@@ -212,23 +212,23 @@
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="caloriesPerGram">Calories per 100g:</label><span class="text-danger">*</span>
-            <input class="form-control" required type="text" th:field="*{caloriesPerGram}" id="caloriesPerGram" placeholder="Enter caloriesPerGram">
+            <input class="form-control" required min="0" type="number" th:field="*{caloriesPerGram}" id="caloriesPerGram" placeholder="Enter caloriesPerGram">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="protein">Protein:</label>
-            <input class="form-control" type="text" th:field="*{protein}" id="protein" placeholder="Enter protein">
+            <input class="form-control" min="0" type="number" th:field="*{protein}" id="protein" placeholder="Enter protein">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="carbs">Carbs:</label>
-            <input class="form-control" type="text" th:field="*{carbs}" id="carbs" placeholder="Enter carbs">
+            <input class="form-control" min="0" type="number" th:field="*{carbs}" id="carbs" placeholder="Enter carbs">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="fat">Fat:</label>
-            <input class="form-control" type="text" th:field="*{fat}" id="fat" placeholder="Enter fat">
+            <input class="form-control" min="0" type="number" th:field="*{fat}" id="fat" placeholder="Enter fat">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="alcohol">Alcohol:</label>
-            <input class="form-control" type="text" th:field="*{alcohol}" id="alcohol" placeholder="Enter alcohol">
+            <input class="form-control" min="0" type="number" th:field="*{alcohol}" id="alcohol" placeholder="Enter alcohol">
         </div>
         <div class="col-6 mb-3">
             <label class="form-label">Current Image:</label><br>

@@ -320,7 +320,14 @@
         </tr>
         </tfoot>
     </table>
+
     <div>Total Price: <span id="totalPrice" th:text="${totalPrice}"></span></div>
+    <div class="col-md-12 text-center">
+        <a class="btn btn-success"
+           th:href="@{/cart}">Go to Cart</a>
+        <a class="btn btn-danger"
+           th:href="@{/cart/clearCart}">Clear Cart</a>
+    </div>
 </div>
 
 
@@ -363,7 +370,7 @@
                             <input type="hidden" name="id" th:value="${product.id}">
                             <input type="hidden" name="name" th:value="${product.title}">
                             <input type="hidden" name="price" th:value="${product.price}">
-                            <button type="submit" class="btn btn-success mt-2" onclick="return confirm('Are you sure you want to add product to cart?')">Add to cart</button>
+                            <button type="submit" sec:authorize="hasAuthority('USER')" class="btn btn-success mt-2" onclick="return confirm('Are you sure you want to add product to cart?')">Add to cart</button>
                             <a th:href="@{/products/details/{id}(id=${product.id})}" class="btn btn-success mt-2">View Details</a>
                         </form>
                     </div>

@@ -1,7 +1,11 @@
 package Nhom_06.HuaKieuLam.entities;
+import Nhom_06.HuaKieuLam.repositories.ValidationGroups;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.Length;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +35,8 @@ public class Invoice {
     private String shippingAddress;
 
     @Column(name = "phone_number")
+    @Length(min = 10, max = 10, message = "Phone must be 10 characters", groups = ValidationGroups.OnCreate.class)
+    @Pattern(regexp = "^[0-9]*$", message = "Phone must be number", groups = ValidationGroups.OnCreate.class)
     private String phoneNumber;
 
     @Column(name = "email")

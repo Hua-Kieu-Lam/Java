@@ -1,6 +1,8 @@
 package Nhom_06.HuaKieuLam.entities;
 
+import Nhom_06.HuaKieuLam.repositories.ValidationGroups;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -22,33 +24,34 @@ public class Product {
     @Column(name = "title", length = 50, nullable = false)
     private String title;
 
+    @Min(value = 1000, groups = ValidationGroups.OnCreate.class)
     @Column(name = "price")
     private Double price;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Positive(message = "Calories must be greater than 0")
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "caloriesPerGram")
     private Double caloriesPerGram;
 
-//    @Positive(message = "Protein must be greater than 0")
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "protein")
     private Double protein;
 
-//    @Positive(message = "Carbs must be greater than 0")
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "carbs")
     private Double carbs;
 
-//    @Positive(message = "Fat must be greater than 0")
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "fat")
     private Double fat;
 
-//    @Positive(message = "Alcohol must be greater than 0")
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "alcohol")
     private Double alcohol;
 
-    @Positive(message = "Quantity must be greater than 0")
+    @Min(value = 0, message = "Must be greater than or equal to 0", groups = ValidationGroups.OnCreate.class)
     @Column(name = "quantity")
     private int quantity;
 

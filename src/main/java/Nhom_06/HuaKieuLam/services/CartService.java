@@ -67,7 +67,7 @@ public class CartService {
 
         invoice.setInvoiceDate(new Date());
         invoice.setPrice(getSumPrice(session));
-        invoice.setStatus("Pending"); // Đặt trạng thái ban đầu là Pending
+        invoice.setStatus("Pending");
         invoiceRepository.save(invoice);
 
         cart.getCartItems().forEach(item -> {
